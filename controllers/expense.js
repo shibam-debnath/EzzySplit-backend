@@ -31,3 +31,5 @@ const deleteExpense = async (req, res) => {
     // delete expense
   }
 };
+
+module.exports = { addExpense, updateExpense, deleteExpense };
