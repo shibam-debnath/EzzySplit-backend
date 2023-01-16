@@ -40,3 +40,6 @@ const expenseSchema = new SchemaTypes({
     },
   ],
 });
+
+
+module.exports = mongoose.model("expenses", expenseSchema);
