@@ -14,7 +14,7 @@ const UserSchema = new Schema({
     required: true,
   },
   tripid: {
-    type: String,
+    type: String, // it should be array of trips in which the person is involved
     required: true,
   },
   totalAmountToPay: {
