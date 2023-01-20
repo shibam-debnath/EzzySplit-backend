@@ -20,10 +20,6 @@ const expenseSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "users",
   },
-  created_at: {
-    type: Date,
-    default: Date.now(),
-  },
   groupId: {
     type: String,
     require: true,

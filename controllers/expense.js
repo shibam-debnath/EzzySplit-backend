@@ -3,7 +3,28 @@ const Expense = require("../models/expense");
 
 // Function 1 : AddExpense handler
 const addExpense = async (req, res) => {
-  const userId = req.user;
+  try {
+    // create new expense
+    // const newExpense = await new Expense({
+    //   amount: req.body.amount,
+    //   notes: req.body.notes,
+
+    //   split_method: req.body.split_method,
+    // });
+
+    const newExpense = await new Expense({
+      amount: "201",
+      notes: "hostel 5 canteen",
+      split_method: "equally",
+    });
+
+    // save new expense to db
+    const exp = await newExpense.save();
+    res.status(200).json("expense added successfully");
+  } catch (err) {
+    console.log(err);
+    res.status(404).json(err);
+  }
 };
 
 // Function 2 : UpdateExpense handler
