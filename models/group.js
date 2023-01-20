@@ -8,7 +8,11 @@ const groupSchema = new Schema({
     type: String,
     require: true,
   },
-  userId: [String],
+  userId: [
+    {user:{
+      type:String
+    }}
+  ],
   expenses: [
     {
       // array of expensesId's using which the expense can be accessed
@@ -38,6 +42,19 @@ const groupSchema = new Schema({
     default: 0,
   },
 });
+
+
+groupSchema.methods.addUserInGroup = async function(userId){
+  try {
+    this.userId = this.userId.concat({user:userId});
+    await this.save();
+    return userId;
+    
+  } catch (error) {
+    console.log(`Error in adding user in group : ${error}`);
+  }
+ 
+}
 
 const Group = mongoose.model("groups", groupSchema);
 module.exports = Group;
