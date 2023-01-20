@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const expenseSchema = new SchemaTypes({
+const expenseSchema = new mongoose.Schema({
   id: {
     type: String,
     require: true,
@@ -24,6 +24,10 @@ const expenseSchema = new SchemaTypes({
     type: Date,
     default: Date.now(),
   },
+  groupId: {
+    type: String,
+    require: true,
+  },
   split_method: {
     type: String,
     enum: ["equally", "amounts"],
@@ -40,6 +44,5 @@ const expenseSchema = new SchemaTypes({
     },
   ],
 });
-
 
 module.exports = mongoose.model("expenses", expenseSchema);
