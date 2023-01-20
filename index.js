@@ -7,7 +7,7 @@ const app = express();
 
 // import routes
 const users = require("./routes/userRoutes");
-const trips = require("./routes/tripRoutes");
+// const trips = require("./routes/tripRoutes");
 const groups = require("./routes/groupRoutes");
 const expenses = require("./routes/expenseRoutes");
 
@@ -27,9 +27,9 @@ app.get("/", (req, res) => {
 });
 
 //routes
-app.use("/user", users);
-app.use("/group", groups);
-app.use("/expense", expenses);
+// app.use("/user", users);
+// app.use("/group", groups);
+// app.use("/expense", expenses);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

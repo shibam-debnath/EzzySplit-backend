@@ -15,7 +15,7 @@ const UserSchema = new Schema({
   },
   tripid: {
     type: String,
-    required: true,
+    required: false,
   },
   totalAmountToPay: {
     type: Number,
