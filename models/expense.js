@@ -35,8 +35,13 @@ const expenseSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "users",
       },
+      toPay: {
+        type: Number,
+        default: 0,
+      },
       paid: {
         type: Number,
+        default: 0,
       },
     },
   ],
