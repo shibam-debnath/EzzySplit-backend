@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const expenseSchema = new SchemaTypes({
+const expenseSchema = new mongoose.Schema({
   id: {
     type: String,
     require: true,
