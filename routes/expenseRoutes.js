@@ -7,7 +7,7 @@ const expenseController = require("../controllers/expense");
 // Different Routes
 
 // Add new expense (Login required)
-router.get("/addExpense", expenseController.addExpense);
+router.post("/addExpense", expenseController.addExpense);
 
 // Update already stored expense (Login required)
 router.post("/:expenseId", expenseController.updateExpense);

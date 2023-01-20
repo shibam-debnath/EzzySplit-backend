@@ -5,17 +5,11 @@ const Expense = require("../models/expense");
 const addExpense = async (req, res) => {
   try {
     // create new expense
-    // const newExpense = await new Expense({
-    //   amount: req.body.amount,
-    //   notes: req.body.notes,
-
-    //   split_method: req.body.split_method,
-    // });
-
-    const newExpense = await new Expense({
-      amount: "201",
-      notes: "hostel 5 canteen",
-      split_method: "equally",
+    const newExpense = await Expense.create({
+      amount: req.body.amount,
+      notes: req.body.notes,
+      split_method: req.body.split_method,
+      groupId: req.body.groupId,
     });
 
     // save new expense to db

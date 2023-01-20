@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const expenseSchema = new mongoose.Schema({
   id: {
     type: String,
-    require: true,
+    // require: true,
   },
   amount: {
     type: String,
@@ -27,6 +27,7 @@ const expenseSchema = new mongoose.Schema({
   split_method: {
     type: String,
     enum: ["equally", "amounts"],
+    require: true,
   },
   split_between: [
     {

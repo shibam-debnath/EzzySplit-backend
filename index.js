@@ -28,8 +28,8 @@ app.get("/", (req, res) => {
 
 //routes
 app.use("/user", users);
-// app.use("/group", groups);
-// app.use("/expense", expenses);
+app.use("/group", groups);
+app.use("/expense", expenses);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
