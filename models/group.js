@@ -13,12 +13,6 @@ const groupSchema = new Schema({
       type:String
     }}
   ],
-  // tokens:[
-  //     {token:{
-
-  //     }}
-  // ],
-
   expenses: [
     {
       // array of expensesId's using which the expense can be accessed
