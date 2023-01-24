@@ -10,6 +10,7 @@ app.use(express.json());
 const users = require("./routes/userRoutes");
 const groups = require("./routes/groupRoutes");
 const expenses = require("./routes/expenseRoutes");
+const contact = require("./routes/contactRoutes");
 
 // mongodb connection
 mongoose.set("strictQuery", true);
@@ -30,6 +31,7 @@ app.get("/", (req, res) => {
 app.use("/user", users);
 // app.use("/group", groups);
 // app.use("/expense", expenses);
+app.use("/contact", contact);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
