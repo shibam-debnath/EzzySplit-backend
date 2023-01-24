@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const expenseSchema = new mongoose.Schema({
   id: {
     type: String,
-    require: true,
+    // require: true,
   },
   amount: {
     type: String,
@@ -20,10 +20,6 @@ const expenseSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "users",
   },
-  created_at: {
-    type: Date,
-    default: Date.now(),
-  },
   groupId: {
     type: String,
     require: true,
@@ -31,6 +27,7 @@ const expenseSchema = new mongoose.Schema({
   split_method: {
     type: String,
     enum: ["equally", "amounts"],
+    require: true,
   },
   split_between: [
     {
@@ -38,8 +35,13 @@ const expenseSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "users",
       },
+      toPay: {
+        type: Number,
+        default: 0,
+      },
       paid: {
         type: Number,
+        default: 0,
       },
     },
   ],

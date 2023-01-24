@@ -29,8 +29,10 @@ app.get("/", (req, res) => {
 
 //routes
 app.use("/user", users);
-// app.use("/group", groups);
+app.use("/group", groups);
+
 // app.use("/expense", expenses);
+
 app.use("/sendmail", sendmail);
 
 
