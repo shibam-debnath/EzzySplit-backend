@@ -38,3 +38,4 @@ exports.addusers = async(req,res)=>{
         res.status(404).json({error:"error in adding users"});
     }
 }
+

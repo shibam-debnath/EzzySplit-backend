@@ -1,4 +1,5 @@
 const User = require("../models/users");
+const send = require("./sendmail");
 
 exports.getUser = async (req, res) => {
   try {
@@ -13,11 +14,14 @@ exports.getUser = async (req, res) => {
 
 exports.adduser = async (req, res) => {
   try {
+    await send.welcome(req.body.emailId, req.body.name);
+
     const result = await User.create({
       emailId: req.body.emailId,
       password: req.body.password,
       name: req.body.name,
     });
+
     res.status(201).json({ result });
   } catch (err) {
     console.log(err);
