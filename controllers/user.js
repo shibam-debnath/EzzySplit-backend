@@ -1,5 +1,5 @@
 const User = require("../models/users");
-const a = require("./contact");
+const send = require("./sendmail");
 
 exports.getUser = async (req, res) => {
   try {
@@ -14,8 +14,8 @@ exports.getUser = async (req, res) => {
 
 exports.adduser = async (req, res) => {
   try {
-    await a.welcome(req.body.emailId,req.body.name);
-    
+    await send.welcome(req.body.emailId, req.body.name);
+
     const result = await User.create({
       emailId: req.body.emailId,
       password: req.body.password,

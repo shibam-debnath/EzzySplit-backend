@@ -1,5 +1,5 @@
 const express = require('express');
-const { welcome} = require("../controllers/contact");
+const { welcome } = require("../controllers/sendmail");
 const router = express.Router();
 
 router.post("/submit", welcome);
