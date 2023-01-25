@@ -1,9 +1,15 @@
 const express = require("express");
 const router = express.Router();
+const { createGroup, addusers } = require('../controllers/group');
+const upload = require('../middleware/upload');
 
-router.get("/", (req, res) => {
-  res.send("<h1>Group</h1>");
-});
+// router.get("/", (req, res) => {
+//   res.send("<h1>Group</h1>");
+// });  
+
+router.post("/creategroup", upload.single('groupIcon'), createGroup);
+router.post("/:groupid/addusers", addusers);
+
 
 module.exports = router;
 
