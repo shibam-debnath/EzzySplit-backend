@@ -1,6 +1,6 @@
 const nodemailer = require("nodemailer");
 
-exports.welcome = async (emailId,name) => {
+exports.sendmail = async (emailId,message) => {
     // let data = req.body;
     let smtpTransport=nodemailer.createTransport({
         service:'Gmail',
@@ -14,7 +14,7 @@ exports.welcome = async (emailId,name) => {
         from:'ezzysplit@gmail.com',
         to:emailId,
         subject:`Welcome to EzzySplit family`,
-        text:`Hey ${name}! Nice to see you here`
+        text:message
     }
 
     smtpTransport.sendMail(mailOptions,(error)=>{
