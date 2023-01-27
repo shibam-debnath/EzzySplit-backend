@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { createGroup, addusers } = require('../controllers/group');
+const { createGroup, addusers, inviteUserInGroup } = require('../controllers/group');
 const upload = require('../middleware/upload');
 
 // router.get("/", (req, res) => {
@@ -8,6 +8,7 @@ const upload = require('../middleware/upload');
 // });  
 
 router.post("/creategroup", upload.single('groupIcon'), createGroup);
+router.post("/:groupid/inviteUser", inviteUserInGroup);
 router.post("/:groupid/addusers", addusers);
 
 
