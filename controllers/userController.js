@@ -2,8 +2,12 @@ const User = require("../models/users");
 
 exports.getUser = async (req, res) => {
   try {
-    const userId = req.params.emailId;
-    const users = await User.find({ emailId: userId });
+    const userId = req.params.userId;
+    console.log(userId);
+    const users = await User.find({ _id: userId });
+    if(!users){
+      res.status(404).json("No user found!");
+    }
     return res.status(200).json({ users });
   } catch (err) {
     console.log(err);

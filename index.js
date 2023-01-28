@@ -29,11 +29,7 @@ app.get("/", (req, res) => {
 //routes
 app.use("/user", users);
 app.use("/group", groups);
-<<<<<<< HEAD
-// app.use("/expense", expenses);
-=======
 app.use("/expense", expenses);
->>>>>>> dfa1a6272f7f0516b371d6be18dae55aefc0fde9
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
