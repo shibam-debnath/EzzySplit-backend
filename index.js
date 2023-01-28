@@ -10,6 +10,7 @@ app.use(express.json());
 const users = require("./routes/userRoutes");
 const groups = require("./routes/groupRoutes");
 const expenses = require("./routes/expenseRoutes");
+const sendmail = require("./routes/sendmailRoutes");
 
 // mongodb connection
 mongoose.set("strictQuery", true);
@@ -29,11 +30,9 @@ app.get("/", (req, res) => {
 //routes
 app.use("/user", users);
 app.use("/group", groups);
-<<<<<<< HEAD
-// app.use("/expense", expenses);
-=======
+app.use("/sendmail", sendmail);
 app.use("/expense", expenses);
->>>>>>> dfa1a6272f7f0516b371d6be18dae55aefc0fde9
+app.use("/uploads",express.static('uploads'));
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

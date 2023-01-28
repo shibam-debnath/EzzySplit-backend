@@ -8,10 +8,16 @@ const groupSchema = new Schema({
     type: String,
     require: true,
   },
+  groupIcon:{
+    type:String,
+    require:false,
+  },
   userId: [
-    {user:{
-      type:String
-    }}
+    {
+      user: {
+        type: String
+      }
+    }
   ],
   expenses: [
     {
@@ -44,16 +50,16 @@ const groupSchema = new Schema({
 });
 
 
-groupSchema.methods.addUserInGroup = async function(userId){
+groupSchema.methods.addUserInGroup = async function (userId) {
   try {
-    this.userId = this.userId.concat({user:userId});
+    this.userId = this.userId.concat({ user: userId });
     await this.save();
     return userId;
-    
+
   } catch (error) {
     console.log(`Error in adding user in group : ${error}`);
   }
- 
+
 }
 
 const Group = mongoose.model("groups", groupSchema);

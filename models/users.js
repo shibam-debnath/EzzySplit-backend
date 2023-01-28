@@ -13,10 +13,15 @@ const UserSchema = new Schema({
     type: String,
     required: true,
   },
+  friends: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "users",
+    },
+  ],
   tripid: {
     type: String,
     required: false,
-
   },
   totalAmountToPay: {
     type: Number,
