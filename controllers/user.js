@@ -21,6 +21,7 @@ exports.adduser = async (req, res) => {
       emailId: req.body.emailId,
       password: req.body.password,
       name: req.body.name,
+      groupid:[]
     });
 
     res.status(201).json({ result });

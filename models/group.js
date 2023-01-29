@@ -49,17 +49,5 @@ const groupSchema = new Schema({
 });
 
 
-groupSchema.methods.addUserInGroup = async function (userId) {
-  try {
-    this.userId = this.userId.concat({ user: userId });
-    await this.save();
-    return userId;
-
-  } catch (error) {
-    console.log(`Error in adding user in group : ${error}`);
-  }
-
-}
-
 const Group = mongoose.model("groups", groupSchema);
 module.exports = Group;

@@ -95,16 +95,27 @@ exports.addusers = async (req, res) => {
     try {
         const groupID = req.params.groupid;
         const userId = req.body.userId;
-        console.log(groupID);
-        const userGroup = await Group.findOne({ _id: groupID });
-        console.log(userGroup);
 
-        const addeduser = await userGroup.addUserInGroup(userId);
-        // console.log(addeduser);
+        // adding user id to group
+        const userGroup = await Group.findOne({ _id: groupID });
+        if(!userGroup){
+            res.status(404).json({ error:"Group doesn't exist" });
+        }
+        userGroup.userId.push(userId);
+        await userGroup.save();
+        
+        // adding group id to user
+        const rgUser = await User.findById({_id:userId});
+        if(!rgUser){
+            res.status(404).json({ error:"User doesn't exist" });
+        }
+        rgUser.groupid.push(groupID);
+        await rgUser.save();
+
         res.status(202).json({ message: "User added in group" });
 
     } catch (error) {
         console.log(error);
-        res.status(404).json({ error: "error in adding users" });
+        res.status(404).json({ error: error });
     }
 }
