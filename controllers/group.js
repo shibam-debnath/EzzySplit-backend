@@ -7,23 +7,41 @@ const { getUser } = require("../controllers/user");
 exports.createGroup = async (req, res) => {
     try {
         const groupName = req.body.groupName;
+        let groupIcon = req.body.groupIcon;
         //    userId from frontend
-        const userId = "63cad572fc525e91b9544d1b";
+        const userId = "63cad5a6fc525e91b9544d25";
+
         if (req.file) {
             groupIcon = req.file.path
             console.log("Image added")
         }
 
+        // console.log(`userId: ${userId}`);
         const result = await Group.create(
             {
                 groupName,
                 groupIcon
             }
         );
-        const addeduser = await result.addUserInGroup(userId);
-        console.log(addeduser);
+        if(!result){
+            res.status(422).json({error:"error in ceating group"});
+        }
+        // console.log(`Result: ${result}`);
+        // Adding current user in Current group created
+        result.userId.push(userId);
+        await result.save();
 
-        console.log(result);
+        // Adding grouId in user schema
+        const rguser = await User.findById({_id:userId});
+        if(!rguser){
+            res.status(422).json({error:"User doesn't exist"});
+        }
+        rguser.groupid.push(result._id);
+        await rguser.save();
+
+        // const addeduser = await result.addUserInGroup(userId);
+        // console.log(addeduser);
+
         if (req.file) {
             res.status(201).json({ message: "group created with groupIcon" });
             return;

@@ -14,9 +14,8 @@ const groupSchema = new Schema({
   },
   userId: [
     {
-      user: {
-        type: String
-      }
+        type: mongoose.Types.ObjectId,
+        ref:"User"
     }
   ],
   expenses: [

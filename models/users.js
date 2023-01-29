@@ -19,10 +19,11 @@ const UserSchema = new Schema({
       ref: "users",
     },
   ],
-  tripid: {
-    type: String,
+  groupid:[{
+    type: mongoose.Types.ObjectId ,
+    ref:"Group",
     required: false,
-  },
+  }],
   totalAmountToPay: {
     type: Number,
     default: 0,
