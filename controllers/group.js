@@ -3,13 +3,14 @@ const Group = require("../models/group");
 const User = require("../models/users");
 const send = require("./sendmail");
 const { getUser } = require("../controllers/user");
+const { findByIdAndUpdate } = require("../models/group");
 
 exports.createGroup = async (req, res) => {
     try {
         const groupName = req.body.groupName;
         let groupIcon = req.body.groupIcon;
         //    userId from frontend
-        const userId = "63cad5a6fc525e91b9544d25";
+        const userId = req.body.userId;
 
         if (req.file) {
             groupIcon = req.file.path
@@ -23,8 +24,8 @@ exports.createGroup = async (req, res) => {
                 groupIcon
             }
         );
-        if(!result){
-            res.status(422).json({error:"error in ceating group"});
+        if (!result) {
+            res.status(422).json({ error: "error in ceating group" });
         }
         // console.log(`Result: ${result}`);
         // Adding current user in Current group created
@@ -32,9 +33,9 @@ exports.createGroup = async (req, res) => {
         await result.save();
 
         // Adding grouId in user schema
-        const rguser = await User.findById({_id:userId});
-        if(!rguser){
-            res.status(422).json({error:"User doesn't exist"});
+        const rguser = await User.findById({ _id: userId });
+        if (!rguser) {
+            res.status(422).json({ error: "User doesn't exist" });
         }
         rguser.groupid.push(result._id);
         await rguser.save();
@@ -51,9 +52,39 @@ exports.createGroup = async (req, res) => {
 
     } catch (error) {
         console.log(error);
-        res.status(404).json({ error: "error in creating group" });
+        res.status(422).json({ error: "error in creating group" });
     }
 }
+
+exports.deleteGroup = async (req, res) => {
+
+}
+
+exports.editGroupName = async (req, res) => {
+    try {
+        const groupId = req.params.groupid;
+        const groupName = req.body.groupName;
+
+        if (!groupName) {
+            res.status(422).send({ error: "Error in updating group" });
+        }
+        else {
+            const currGroup = await Group.findByIdAndUpdate({ _id: groupId }, {
+                groupName: groupName
+            })
+            if (!currGroup) {
+                res.status(422).send({ error: "Error in updating group" });
+            }
+
+            res.status(200).json({ message: "Group edited successfully" });
+        }
+
+    } catch (error) {
+        console.log(`Error in editing Group : ${error}`)
+        res.status(422).json({ error: "Error in creating group" });
+    }
+}
+
 
 exports.inviteUserInGroup = async (req, res) => {
     try {
@@ -96,26 +127,60 @@ exports.addusers = async (req, res) => {
         const groupID = req.params.groupid;
         const userId = req.body.userId;
 
-        // adding user id to group
+
         const userGroup = await Group.findOne({ _id: groupID });
-        if(!userGroup){
-            res.status(404).json({ error:"Group doesn't exist" });
-        }
-        userGroup.userId.push(userId);
-        await userGroup.save();
-        
-        // adding group id to user
-        const rgUser = await User.findById({_id:userId});
-        if(!rgUser){
-            res.status(404).json({ error:"User doesn't exist" });
-        }
-        rgUser.groupid.push(groupID);
-        await rgUser.save();
+        const rgUser = await User.findById({ _id: userId });
 
-        res.status(202).json({ message: "User added in group" });
+        if (!userGroup) {
+            res.status(422).json({ error: "Group doesn't exist" });
+        }
+        else if (!rgUser) {
+            res.status(422).json({ error: "User doesn't exist" });
+        }
+        else {
+            console.log(`userGroup: ${userGroup}`);
+            console.log(`UserGroup.UserId: ${userGroup.userId}`);
+            // Finding in array of userId in group that user already exist or not 
+            const isUserExist = await userGroup.userId.find(function(element){
+                return element == userId;
+            });
+            console.log(`isUserExist: ${isUserExist}`);
+            if (isUserExist) {
+                res.status(422).json({ error: "User alredy exist" });
+            }
+            else {
+                // adding user id to group
+                userGroup.userId.push(userId);
+                await userGroup.save();
 
+                // adding group id to user
+                rgUser.groupid.push(groupID);
+                await rgUser.save();
+
+                res.status(200).json({ message: "User added in group" });
+            }
+        }
     } catch (error) {
         console.log(error);
-        res.status(404).json({ error: error });
+        res.status(422).json({ error: error });
     }
+}
+
+
+exports.deleteUserFromGroup = async (req, res) => {
+    const userId = req.params.userid;
+    const groupId = req.params.groupid;
+    const grp = await Group.findById({ _id: groupId });
+
+    console.log(grp);
+
+}
+
+
+exports.getAllGroups = async (req, res) => {
+
+}
+
+exports.getUserListInGroup = async (req, res) => {
+
 }
