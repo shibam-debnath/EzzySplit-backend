@@ -1,6 +1,10 @@
 const nodemailer = require("nodemailer");
 
 exports.contactMail = async (req, res) => {
+    console.log(req.body.name);
+    console.log(req.body.emailId);
+    console.log(req.body.message);
+
     let smtpTransport = nodemailer.createTransport({
         service: 'Gmail',
         auth: {
@@ -19,6 +23,7 @@ exports.contactMail = async (req, res) => {
 
     smtpTransport.sendMail(mailOptions, (error) => {
         if (error) {
+            // res.send(error)
             res.send("Failed to receive mail")
             console.log(error);
         }
