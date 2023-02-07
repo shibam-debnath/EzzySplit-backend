@@ -60,6 +60,7 @@ exports.deleteGroup = async (req, res) => {
 
 }
 
+// Here we have to add AUTHENTICATION >> so that only group admin can edit
 exports.editGroupName = async (req, res) => {
     try {
         const groupId = req.params.groupid;
@@ -141,7 +142,7 @@ exports.addusers = async (req, res) => {
             console.log(`userGroup: ${userGroup}`);
             console.log(`UserGroup.UserId: ${userGroup.userId}`);
             // Finding in array of userId in group that user already exist or not 
-            const isUserExist = await userGroup.userId.find(function(element){
+            const isUserExist = await userGroup.userId.find(function (element) {
                 return element == userId;
             });
             console.log(`isUserExist: ${isUserExist}`);
@@ -167,12 +168,33 @@ exports.addusers = async (req, res) => {
 }
 
 
+// Here we have to add AUTHENTICATION >> so that only admin can delete
 exports.deleteUserFromGroup = async (req, res) => {
-    const userId = req.params.userid;
-    const groupId = req.params.groupid;
-    const grp = await Group.findById({ _id: groupId });
 
-    console.log(grp);
+    try {
+        const userId = req.params.userid;
+        const groupId = req.params.groupid;
+
+        const grp = await Group.findById({ _id: groupId });
+        const userToDel = await User.findById({ _id: userId });
+
+        if (!grp || !userToDel) {
+            res.status(422).json({ error: "Error in deleting user" });
+        }
+        else {
+            await grp.userId.pull(userId);
+            await grp.save();
+
+            await userToDel.groupid.pull(groupId);
+            await userToDel.save();
+
+            res.status(200).json({ message: "User removed from group" });
+        }
+
+    } catch (error) {
+        console.log(error);
+        res.status(422).json({ error: "Error in deleting user" });
+    }
 
 }
 
