@@ -64,9 +64,9 @@ exports.deleteGroup = async (req, res) => {
             res.status(422).json({ error: "Group doesn't exist" });
         }
         else {
-            groupDetails.userId.map(async(val)=>{
+            groupDetails.userId.map(async (val) => {
                 // console.log(val);
-                const userDet = await User.findById({_id:val._id});
+                const userDet = await User.findById({ _id: val._id });
                 userDet.groupid.pull(groupId);
                 await userDet.save();
                 userDet.prevGroups.push(groupId);
@@ -259,7 +259,7 @@ exports.getAllUserOfCurrentGroup = async (req, res) => {
 }
 
 
-exports.getPreviousGroups = async(req,res)=>{
+exports.getPreviousGroups = async (req, res) => {
     try {
         const userId = req.params.userid;
         const currUser = await User.findById({ _id: userId }).populate("prevGroups");
@@ -269,9 +269,30 @@ exports.getPreviousGroups = async(req,res)=>{
         else {
             res.status(200).send(currUser);
         }
-        
+
     } catch (error) {
         console.log(error);
         res.status(422).json({ error: "Error in fetching groups" });
+    }
+}
+
+exports.deletePreviouGroup = async (req, res) => {
+    try {
+        const userId = req.params.userid;
+        const groupId = req.params.groupid;
+        const currUser = await User.findById({_id:userId});
+        if(!currUser){
+            res.status(422).json({ error: "User doesn't exist" });
+        }
+        else{
+            currUser.prevGroups.pull(groupId);
+            await currUser.save();
+
+            res.status(200).json({ message: "Group deleted successfully" });
+        }
+
+    } catch (error) {
+        console.log(error);
+        res.status(422).json({ error: "Error in deleting groups" });
     }
 }
