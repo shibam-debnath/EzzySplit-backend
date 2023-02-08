@@ -24,6 +24,11 @@ const UserSchema = new mongoose.Schema({
     ref:"Group",
     required: false,
   }],
+  prevGroups:[{
+    type: mongoose.Types.ObjectId ,
+    ref:"Group",
+    required: false,
+  }],
   totalAmountToPay: {
     type: Number,
     default: 0,
