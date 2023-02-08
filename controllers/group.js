@@ -257,3 +257,21 @@ exports.getAllUserOfCurrentGroup = async (req, res) => {
     }
 
 }
+
+
+exports.getPreviousGroups = async(req,res)=>{
+    try {
+        const userId = req.params.userid;
+        const currUser = await User.findById({ _id: userId }).populate("prevGroups");
+        if (!currUser) {
+            res.status(422).json({ error: "Group doesn't exist" });
+        }
+        else {
+            res.status(200).send(currUser);
+        }
+        
+    } catch (error) {
+        console.log(error);
+        res.status(422).json({ error: "Error in fetching groups" });
+    }
+}
