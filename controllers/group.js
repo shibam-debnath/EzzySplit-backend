@@ -200,9 +200,36 @@ exports.deleteUserFromGroup = async (req, res) => {
 
 
 exports.getAllGroups = async (req, res) => {
+    try {
+        const userId = req.params.userid;
+        const currUser = await User.findById({_id:userId}).populate("groupid");
+        if(!currUser){
+            res.status(422).json({ error: "User doesn't exist" });
+        }
+        else{
+            res.status(200).send(currUser);
+        }
 
+    } catch (error) {
+        console.log(error);
+        res.status(422).json({ error: "Error in fetching groups" });
+    }
 }
 
-exports.getUserListInGroup = async (req, res) => {
+exports.getAllUserOfCurrentGroup = async (req, res) => {
+    try {
+        const groupId = req.params.groupid;
+        const groupDetails = await Group.findById({_id:groupId}).populate("userId");
+        if(!groupDetails){
+            res.status(422).json({ error: "Group doesn't exist" });
+        }
+        else{
+            res.status(200).send(groupDetails);
+        }
+        
+    } catch (error) {
+        console.log(error);
+        res.status(422).json({ error: "Error in fetching groups" });
+    }
 
 }

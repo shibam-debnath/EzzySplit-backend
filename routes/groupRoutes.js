@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { createGroup, addusers, inviteUserInGroup,deleteUserFromGroup,deleteGroup,editGroupName,getAllGroups,getUserListInGroup} = require('../controllers/group');
+const { createGroup, addusers, inviteUserInGroup,deleteUserFromGroup,deleteGroup,editGroupName,getAllGroups,getAllUserOfCurrentGroup} = require('../controllers/group');
 const upload = require('../middleware/upload');
 const { route } = require("./userRoutes");
 
@@ -17,7 +17,7 @@ router.post("/:groupid/addusers", addusers);
 router.delete("/:groupid/:userid",deleteUserFromGroup);
 
 router.get("/:userid",getAllGroups);
-router.get("/:groupid/users",getUserListInGroup);
+router.get("/:groupid/users",getAllUserOfCurrentGroup);
 
 
 module.exports = router;
