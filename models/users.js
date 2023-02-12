@@ -1,6 +1,6 @@
-const { Schema, default: mongoose } = require("mongoose");
+const mongoose = require("mongoose");
 
-const UserSchema = new Schema({
+const UserSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
@@ -19,10 +19,20 @@ const UserSchema = new Schema({
       ref: "users",
     },
   ],
-  tripid: {
-    type: String,
-    required: false,
-  },
+  groupid: [
+    {
+      type: mongoose.Types.ObjectId,
+      ref: "Group",
+      required: false,
+    },
+  ],
+  prevGroups: [
+    {
+      type: mongoose.Types.ObjectId,
+      ref: "Group",
+      required: false,
+    },
+  ],
   totalAmountToPay: {
     type: Number,
     default: 0,
@@ -80,5 +90,5 @@ const UserSchema = new Schema({
   ],
 });
 
-const User = mongoose.model("users", UserSchema);
+const User = mongoose.model("User", UserSchema);
 module.exports = User;

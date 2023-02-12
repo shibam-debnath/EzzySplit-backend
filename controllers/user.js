@@ -14,13 +14,14 @@ exports.getUser = async (req, res) => {
 
 exports.adduser = async (req, res) => {
   try {
-    const text=`Hey ${req.body.name}! Nice to see you here`;
-    await send.sendmail(req.body.emailId,text);
+    const text = `Hey ${req.body.name}! Nice to see you here`;
+    await send.sendmail(req.body.emailId, text);
 
     const result = await User.create({
       emailId: req.body.emailId,
       password: req.body.password,
       name: req.body.name,
+      groupid: [],
     });
 
     res.status(201).json({ result });
