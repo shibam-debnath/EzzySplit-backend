@@ -32,12 +32,6 @@ const updateExpense = async (req, res) => {
   if (!expense) {
     return res.status(404).send({ error: "Expense not found!" });
   } else {
-    // access new requests
-    // const new_amount = req.body.amount;
-    // const new_notes = req.body.notes;
-    // const new_split_method = req.body.split_method;
-    // const new_groupId = req.body.groupId;
-
     Expense.findByIdAndUpdate(
       expenseId,
       {
@@ -60,12 +54,12 @@ const updateExpense = async (req, res) => {
     // expense.groupId = new_groupId;
     // expense.split_method = new_split_method;
 
-    // // previous split between
+    // previous split between
     // const splitData = expense.split_between;
     // const new_splitData = req.body.split_between;
 
     // for (let i = 0; i < splitData.length; i++) {
-    //   // access details of last transaction
+    // access details of last transaction
     //   splitData[i].user = new_splitData[i].user;
     //   splitData[i].paid = new_splitData[i].paid;
     //   splitData[i].toPay = new_splitData[i].toPay;
@@ -89,6 +83,7 @@ const deleteExpense = async (req, res) => {
 
     if (!ExpenseDeleted) {
       res.status(404).json("Deletion failed");
+      return;
     }
     return res.status(200).send("Expense Deleted Succesfully!");
   }

@@ -59,7 +59,6 @@ groupSchema.methods.addUserInGroup = async function (userId) {
   } catch (error) {
     console.log(`Error in adding user in group : ${error}`);
   }
-
 }
 
 const Group = mongoose.model("groups", groupSchema);
