@@ -1,5 +1,22 @@
 // Model
 const Expense = require("../models/expense");
+const Group = require("../models/group");
+
+// Settle function
+const settleExpense = async (req, res) => {
+  const groupId = req.params.groupId;
+  const ourGroup = await Group.findById({ _id: groupId });
+
+  if (!ourGroup) {
+    res.status(500).send({ error: "group not found" });
+  } else {
+    const expense = ourGroup.expenses;
+    res.status(200).send(groupId);
+
+
+
+  }
+};
 
 // Function 1 : AddExpense handler
 const addExpense = async (req, res) => {
@@ -13,6 +30,7 @@ const addExpense = async (req, res) => {
       split_between: req.body.split_between,
     });
 
+    
     // save new expense to db
     const exp = await newExpense.save();
     res.status(200).json("expense added successfully");
@@ -89,4 +107,4 @@ const deleteExpense = async (req, res) => {
   }
 };
 
-module.exports = { addExpense, updateExpense, deleteExpense };
+module.exports = { addExpense, updateExpense, deleteExpense, settleExpense };

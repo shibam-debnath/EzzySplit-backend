@@ -26,13 +26,6 @@ const UserSchema = new mongoose.Schema({
       required: false,
     },
   ],
-  prevGroups: [
-    {
-      type: mongoose.Types.ObjectId,
-      ref: "Group",
-      required: false,
-    },
-  ],
   totalAmountToPay: {
     type: Number,
     default: 0,
@@ -42,10 +35,6 @@ const UserSchema = new mongoose.Schema({
     default: 0,
   },
   totalAmountRecieved: {
-    type: Number,
-    default: 0,
-  },
-  totalAmountPaidToOthers: {
     type: Number,
     default: 0,
   },
@@ -72,17 +61,6 @@ const UserSchema = new mongoose.Schema({
       amountRecieved: Number,
       recievedFor: String,
       paidDate: {
-        type: Date,
-        default: Date.now(),
-      },
-    },
-  ],
-  myPaymentsToOthers: [
-    {
-      amount: Number,
-      paidTo: String,
-      paidFor: String,
-      date: {
         type: Date,
         default: Date.now(),
       },
