@@ -30,4 +30,7 @@ var upload = multer({
     }
 })
 
+
+// to store images - we can use cloudware platform
+
 module.exports = upload
