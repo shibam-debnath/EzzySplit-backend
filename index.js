@@ -34,7 +34,7 @@ app.use("/user", users);
 app.use("/group", groups);
 app.use("/sendmail", sendmail);
 app.use("/expense", expenses);
-app.use("/uploads",express.static('uploads'));
+app.use("/uploads", express.static("uploads"));
 
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => {

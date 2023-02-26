@@ -8,15 +8,15 @@ const groupSchema = new mongoose.Schema({
     type: String,
     require: true,
   },
-  groupIcon:{
-    type:String,
-    require:false,
+  groupIcon: {
+    type: String,
+    require: false,
   },
   userId: [
     {
-        type: mongoose.Types.ObjectId,
-        ref:"User"
-    }
+      type: mongoose.Types.ObjectId,
+      ref: "User",
+    },
   ],
   expenses: [
     {
@@ -47,7 +47,6 @@ const groupSchema = new mongoose.Schema({
     default: 0,
   },
 });
-
 
 const Group = mongoose.model("Group", groupSchema);
 module.exports = Group;
