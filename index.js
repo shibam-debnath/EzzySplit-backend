@@ -6,6 +6,10 @@ require("dotenv").config();
 const app = express();
 app.use(express.json());
 
+//for cross origin
+const cors= require('cors');
+app.use(cors());
+
 // import routes
 const users = require("./routes/userRoutes");
 const groups = require("./routes/groupRoutes");
