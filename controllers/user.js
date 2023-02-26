@@ -4,7 +4,8 @@ const send = require("./sendmail");
 exports.getUser = async (req, res) => {
   try {
     const userId = req.params.userId;
-    const users = await User.find({ _id: userId });
+    // console.log(userId);
+    const users = await User.findById({ _id: userId });
     return res.status(200).json({ users });
   } catch (err) {
     console.log(err);
