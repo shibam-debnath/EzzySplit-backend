@@ -5,6 +5,21 @@ const send = require("./sendmail");
 const { getUser } = require("../controllers/user");
 const { findByIdAndUpdate } = require("../models/group");
 
+
+exports.getGroup = async (req, res) => {
+    try {
+      const groupId = req.params.groupId;
+      // console.log(userId);
+      const group = await Group.findById({ _id: groupId });
+      console.log(group);
+      return res.status(200).json({ group });
+    } catch (err) {
+      console.log(err);
+      res.status(404).json("No such group found!");
+    }
+  };
+
+
 exports.createGroup = async (req, res) => {
     try {
         const groupName = req.body.groupName;
