@@ -19,29 +19,36 @@ const settleExpense = async (req, res) => {
 const addExpense = async (req, res) => {
   try {
     const groupId = req.body.groupId;
+    console.log(`GrpID: ${groupId}`);
     const ourGroup = await Group.findById({ _id: groupId });
+    console.log(`ourGroup: ${ourGroup}`);
+    // console.log(ourGroup);
     if (!ourGroup) {
-      res.ststus(500).send("Group not found");
+      res.status(500).send("Group not found");
     }
 
     // * if everything ok then create new expense
     const newExpense = await Expense.create({
       amount: req.body.amount,
       notes: req.body.notes,
-      groupId: req.body.groupId,
-      split_method: req.body.split_method,
-      split_between: req.body.split_between,
+      groupId: req.body.groupId
+      // split_method: req.body.split_method,
+      // split_between: req.body.split_between,
     });
     // save new expense to db
     await newExpense.save();
-
-    // ! Update the expense in Group
-    ourGroup.expenses.push(newExpense);
-    const done = await ourGroup.save();
+    console.log(`newExp: ${newExpense}`);
+    ourGroup.expenseId.push(newExpense._id);
+    await ourGroup.save();
+    console.log(`ourGrp lst:: ${ourGroup}`);
+    // console.log(newExpense);
+    // // ! Update the expense in Group
+    // ourGroup.expenses.push(newExpense._id);
+    // const done = await ourGroup.save();
     // console.log(done);
-    res.status(200).json("expense added successfully");
+    res.status(200).json(ourGroup);
   } catch (err) {
-    // console.log(err);
+    console.log(err);
     res.status(404).json(err);
   }
 };
