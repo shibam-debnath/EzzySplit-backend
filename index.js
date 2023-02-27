@@ -8,10 +8,6 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-//for cross origin
-const cors= require('cors');
-app.use(cors());
-
 // import routes
 const users = require("./routes/userRoutes");
 const groups = require("./routes/groupRoutes");
