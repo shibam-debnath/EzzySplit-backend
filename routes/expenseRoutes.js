@@ -15,4 +15,7 @@ router.post("/:expenseId", expenseController.updateExpense);
 // Delete Expense: Using Delete (Login required)
 router.delete("/:expenseId", expenseController.deleteExpense);
 
+// Settle expense
+router.post("/settle/:groupId", expenseController.settleExpense);
+
 module.exports = router;
