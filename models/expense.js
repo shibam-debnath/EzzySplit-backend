@@ -5,6 +5,9 @@ const expenseSchema = new mongoose.Schema({
     type: String,
     require: true,
   },
+  description: {
+    type: String,
+  },
   notes: {
     type: String,
   },
@@ -13,13 +16,19 @@ const expenseSchema = new mongoose.Schema({
     default: Date.now(),
   },
   createdBy: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "users",
+    type: mongoose.Types.ObjectId,
+    ref: "User",
   },
   groupId: {
     type: String,
     require: true,
   },
+  paidBy: [
+    {userId:{
+      type: mongoose.Types.ObjectId,
+      ref: "User",
+    }}
+  ],
   split_method: {
     type: String,
     enum: ["equally", "amounts"],

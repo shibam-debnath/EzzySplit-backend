@@ -30,8 +30,9 @@ const addExpense = async (req, res) => {
     // * if everything ok then create new expense
     const newExpense = await Expense.create({
       amount: req.body.amount,
-      notes: req.body.notes,
-      groupId: req.body.groupId
+      description: req.body.description,
+      groupId: req.body.groupId,
+      paidBy: req.body.paidBy
       // split_method: req.body.split_method,
       // split_between: req.body.split_between,
     });
@@ -149,4 +150,21 @@ const deleteExpense = async (req, res) => {
   }
 };
 
-module.exports = { addExpense, updateExpense, deleteExpense, settleExpense };
+
+// Fetch Expenses details
+const expenseDetails = async(req,res)=>{
+  try {
+    const expenseId = req.params.expenseid;
+    const ExpDet = await Expense.findById({_id:expenseId}).populate('paidBy.userId');
+    if(!ExpDet){
+      res.status(422).json({error:"Error in fetching Expense details"});
+    }
+    res.status(200).json({expenseDetails:ExpDet});
+    
+  } catch (error) {
+    res.status(422).json({error});
+  }
+
+}
+
+module.exports = { addExpense, updateExpense, deleteExpense, settleExpense ,expenseDetails};

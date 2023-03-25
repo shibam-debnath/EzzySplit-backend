@@ -10,7 +10,7 @@ exports.getGroup = async (req, res) => {
     try {
         const groupId = req.params.groupId;
         // console.log(userId);
-        const group = await Group.findById({ _id: groupId }).populate("expenseId");
+        const group = await Group.findById({ _id: groupId }).populate("expenseId").populate('userId');
         console.log(group);
         return res.status(200).json({ group });
     } catch (err) {
