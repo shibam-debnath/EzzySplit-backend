@@ -24,10 +24,19 @@ const expenseSchema = new mongoose.Schema({
     require: true,
   },
   paidBy: [
-    {userId:{
+    {
+    userId:{
       type: mongoose.Types.ObjectId,
       ref: "User",
-    }}
+    },
+    amount:{
+      type: String,
+      default:"0"
+    },
+    name:{
+      type: String
+    }
+  }
   ],
   split_method: {
     type: String,
