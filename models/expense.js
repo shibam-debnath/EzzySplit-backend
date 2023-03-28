@@ -34,7 +34,8 @@ const expenseSchema = new mongoose.Schema({
       default:"0"
     },
     name:{
-      type: String
+      type: String,
+      require:false
     }
   }
   ],

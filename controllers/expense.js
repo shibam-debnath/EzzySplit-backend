@@ -1,5 +1,5 @@
 // Model
-const Expense = require("../models/expense");
+ const Expense = require("../models/expense");
 const Group = require("../models/group");
 
 // Settle function
@@ -167,4 +167,4 @@ const expenseDetails = async(req,res)=>{
 
 }
 
-module.exports = { addExpense, updateExpense, deleteExpense, settleExpense ,expenseDetails};
+module.exports = { addExpense, updateExpense, deleteExpense ,expenseDetails};

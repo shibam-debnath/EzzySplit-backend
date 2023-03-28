@@ -288,3 +288,74 @@ exports.deletePreviouGroup = async (req, res) => {
         res.status(422).json({ error: "Error in deleting groups" });
     }
 };
+
+exports.settleExpenses = async (req, res) => {
+    try {
+        const groupId = req.params.groupId;
+        const group = await Group.findById({ _id: groupId }).populate("expenseId");
+
+        if (!group) {
+            res.status(201).json("Group doesn't exist");
+        }
+        else {
+            //right doing only for simple case(i.e for equally splitting and one expense paid by one at a time)
+            var eachTotal = group.total;
+            const number = group.userId.length;
+            eachTotal=eachTotal/number;
+            // console.log(number);
+            console.log(eachTotal);
+
+            const eachExpended={};
+            for(var i=0; i<number; i++)eachExpended[group.userId[i]]=0;
+            console.log(eachExpended);
+            console.log("khatam");
+
+            for(var i=0; i<group.expenseId.length; i++)
+            {
+                for(var j=0; j<group.expenseId[i].paidBy.length; j++)
+                {
+                    const value =Number(eachExpended[group.expenseId[i].paidBy[j].userId]);
+                    eachExpended[group.expenseId[i].paidBy[j].userId]=value+Number(group.expenseId[i].paidBy[j].amount);
+                }
+            }
+
+            console.log(eachExpended);
+            
+            for(let[key,value] of Object.entries(eachExpended))
+            {
+                eachExpended[key]=Number(value)-eachTotal;
+            }
+            console.log(eachExpended);
+
+
+            // var eachExpended = new Map();
+            // for(var i=0; i<number; i++)eachExpended.set(group.userId[i],0);
+
+            // for(var i=0; i<group.expenseId.length; i++)
+            // {
+            //     for(var j=0; j<group.expenseId[i].paidBy.length; j++)
+            //     {
+            //         console.log(group.expenseId[i].paidBy[j].userId);
+            //         console.log("khatam");
+            //         const value=eachExpended.get(group.expenseId[i].paidBy[j].userId);
+            //         console.log(value);
+            //         eachExpended.set(group.expenseId[i].paidBy[j].userId,value+group.expenseId[i].paidBy[j].amount);
+            //     }
+            // }
+ 
+            // console.log(eachExpended);
+
+            // eachExpended.forEach(function(key,val){
+            //     const t = eachExpended[key]-eachTotal;
+            //     console.log(t);
+            //     eachExpended.set(key,t);
+            // })
+            
+            res.status(201).json(group);
+        }
+
+    } catch (error) {
+        console.log(error);
+        res.status(422).json("Something went wrong");
+    }
+}
