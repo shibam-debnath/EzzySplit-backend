@@ -2,19 +2,6 @@
  const Expense = require("../models/expense");
 const Group = require("../models/group");
 
-// Settle function
-const settleExpense = async (req, res) => {
-  const groupId = req.params.groupId;
-  const ourGroup = await Group.findById({ _id: groupId });
-
-  if (!ourGroup) {
-    res.status(500).send({ error: "group not found" });
-  } else {
-    const expense = ourGroup.expenses;
-    res.status(200).send(groupId);
-  }
-};
-
 // Function 1 : AddExpense handler
 const addExpense = async (req, res) => {
   try {
