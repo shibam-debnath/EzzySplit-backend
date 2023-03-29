@@ -298,60 +298,94 @@ exports.settleExpenses = async (req, res) => {
             res.status(201).json("Group doesn't exist");
         }
         else {
-            //right doing only for simple case(i.e for equally splitting and one expense paid by one at a time)
+            
             var eachTotal = group.total;
             const number = group.userId.length;
-            eachTotal=eachTotal/number;
+            eachTotal = eachTotal / number;
             // console.log(number);
-            console.log(eachTotal);
+            // console.log(eachTotal);
 
-            const eachExpended={};
-            for(var i=0; i<number; i++)eachExpended[group.userId[i]]=0;
+            const eachExpended = {};
+            for (var i = 0; i < number; i++)eachExpended[group.userId[i]] = 0;
             console.log(eachExpended);
-            console.log("khatam");
+            // console.log("khatam");
 
-            for(var i=0; i<group.expenseId.length; i++)
-            {
-                for(var j=0; j<group.expenseId[i].paidBy.length; j++)
-                {
-                    const value =Number(eachExpended[group.expenseId[i].paidBy[j].userId]);
-                    eachExpended[group.expenseId[i].paidBy[j].userId]=value+Number(group.expenseId[i].paidBy[j].amount);
+            const individual = {};
+            for (var i = 0; i < number; i++)individual[group.userId[i]] = 0;
+
+            for (var i = 0; i < group.expenseId.length; i++) {
+                for (var j = 0; j < group.expenseId[i].paidBy.length; j++) {
+                    const value = Number(eachExpended[group.expenseId[i].paidBy[j].userId]);
+                    eachExpended[group.expenseId[i].paidBy[j].userId] = value + Number(group.expenseId[i].paidBy[j].amount);
+
+                }
+                if (group.expenseId[i].split_method && group.expenseId[i].split_method == "amount") {
+                    for (var k = 0; k < group.expenseId[i].split_between.length; k++) {
+                        const temp = group.expenseId[i].split_between[k];
+                        // console.log(temp.userId);
+                        var value = Number(individual[temp.userId]);
+                        value = value + Number(temp.amount);
+                        // console.log(temp.amount);
+                        // console.log(value);
+                        individual[temp.userId] = value;
+                    }
+                }
+                else {
+                    const equal = group.expenseId[i].amount / number;
+                    for (var k = 0; k < number; k++) {
+                        var value = individual[group.userId[k]];
+                        value = Number(value) + Number(equal);
+                        console.log(group.userId[k]);
+                        console.log(value);
+                        individual[group.userId[k]] = value;
+                    }
                 }
             }
+            console.log("individual");
+            console.log(individual);
 
-            console.log(eachExpended);
-            
-            for(let[key,value] of Object.entries(eachExpended))
-            {
-                eachExpended[key]=Number(value)-eachTotal;
-            }
-            console.log(eachExpended);
-
-
-            // var eachExpended = new Map();
-            // for(var i=0; i<number; i++)eachExpended.set(group.userId[i],0);
-
-            // for(var i=0; i<group.expenseId.length; i++)
-            // {
-            //     for(var j=0; j<group.expenseId[i].paidBy.length; j++)
-            //     {
-            //         console.log(group.expenseId[i].paidBy[j].userId);
-            //         console.log("khatam");
-            //         const value=eachExpended.get(group.expenseId[i].paidBy[j].userId);
-            //         console.log(value);
-            //         eachExpended.set(group.expenseId[i].paidBy[j].userId,value+group.expenseId[i].paidBy[j].amount);
-            //     }
-            // }
- 
             // console.log(eachExpended);
 
-            // eachExpended.forEach(function(key,val){
-            //     const t = eachExpended[key]-eachTotal;
-            //     console.log(t);
-            //     eachExpended.set(key,t);
-            // })
+            for (let [key, value] of Object.entries(eachExpended)) {
+                eachExpended[key] = Number(value) - Number(individual[key]);
+            }
+            // console.log(eachExpended);
+
+            const pos = [];
+            const neg = [];
+            const payment = [];//payer,receiver,amount
+
+            for (let [key, value] of Object.entries(eachExpended)) {
+                if (value >= 0) pos.push([value, key]);
+                else neg.push([value, key]);
+            }
+
+            while (pos.length > 0 && neg.length > 0) {
+                pos.sort((a, b) => a[0] - b[0]);
+                neg.sort((a, b) => a[0] - b[0]);
+                // console.log(pos);
+                // console.log(neg);
+
+                const n = pos.length - 1;
+                const posValue = pos[n][0];
+                const negValue = neg[0][0];
+
+                const change = Math.min(posValue, Math.abs(negValue));
+                pos[pos.length - 1][0] -= change;
+                neg[0][0] += change;
+
+                payment.push({'payer':neg[0][1], 'receiver': pos[n][1], 'amount':change});
+
+                if (pos[n][0] == 0) pos.pop();
+                if (neg[0][0] == 0) neg.shift();
+
+
+            }
+
+            // console.log("payment");
+            // console.log(payment);
             
-            res.status(201).json(group);
+            res.status(201).json(payment);
         }
 
     } catch (error) {
