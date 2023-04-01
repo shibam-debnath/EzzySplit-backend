@@ -22,7 +22,6 @@ router.get("/:groupid/users", getAllUserOfCurrentGroup);
 
 router.get("/:userid/previousgroups", getPreviousGroups);
 router.delete("/:userid/:groupid/previousgroup", deletePreviouGroup);
-
 router.get("/settle/:groupId", settleExpenses);
 
 module.exports = router;
