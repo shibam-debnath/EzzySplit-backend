@@ -32,9 +32,9 @@ const addExpense = async (req, res) => {
       amount: req.body.amount,
       description: req.body.description,
       groupId: req.body.groupId,
-      paidBy: req.body.paidBy
-      // split_method: req.body.split_method,
-      // split_between: req.body.split_between,
+      paidBy: req.body.paidBy,
+      split_method: req.body.split_method,
+      split_between: req.body.split_between
     });
     // save new expense to db
     await newExpense.save();
