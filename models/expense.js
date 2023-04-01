@@ -46,17 +46,16 @@ const expenseSchema = new mongoose.Schema({
   split_between: [
     {
       user: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "users",
+        type: mongoose.Types.ObjectId,
+        ref: "User",
       },
       toPay: {
-        type: Number,
-        default: 0,
+        type: String,
+        default: "",
       },
-      paid: {
-        type: Number,
-        default: 0,
-      },
+      name:{
+        type: String
+      }
     },
   ],
 });
