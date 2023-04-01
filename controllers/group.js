@@ -323,12 +323,12 @@ exports.settleExpenses = async (req, res) => {
             }
 
             // not equally split
-            if (group.expenseId[i].split_method && group.expenseId[i].split_method == "amount") {
+            if (group.expenseId[i].split_method == "unequally") {
                 for (var k = 0; k < group.expenseId[i].split_between.length; k++) {
                     const temp = group.expenseId[i].split_between[k];
-                    var value = Number(individual[temp.userId]);
-                    value = value + Number(temp.amount);
-                    individual[temp.userId] = value;
+                    var value = Number(individual[temp.user]);
+                    value = value + Number(temp.toPay);
+                    individual[temp.user] = value;
                 }
             }
             // equal split 
@@ -341,10 +341,9 @@ exports.settleExpenses = async (req, res) => {
                 }
             }
         }
-
+        
         // SETTLE EXPENSE 
-
-
+        
         const output = [];
         // output format-
         // 0th index -> total expense done by the each user ( concatenation of all equal & unequal splitting),
