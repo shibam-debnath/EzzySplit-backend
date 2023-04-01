@@ -38,10 +38,10 @@ const addExpense = async (req, res) => {
     });
     // save new expense to db
     await newExpense.save();
-    console.log(`newExp: ${newExpense}`);
+    // console.log(`newExp: ${newExpense}`);
     ourGroup.expenseId.push(newExpense._id);
     await ourGroup.save();
-    console.log(`ourGrp lst:: ${ourGroup}`);
+    // console.log(`ourGrp lst:: ${ourGroup}`);
     // console.log(newExpense);
     // // ! Update the expense in Group
     // ourGroup.expenses.push(newExpense._id);
