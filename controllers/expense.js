@@ -11,7 +11,7 @@ const addExpense = async (req, res) => {
     console.log(`ourGroup: ${ourGroup}`);
     // console.log(ourGroup);
     if (!ourGroup) {
-      res.status(500).send("Group not found");
+       return res.status(500).send("Group not found");
     }
 
     // * if everything ok then create new expense

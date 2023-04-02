@@ -10,7 +10,7 @@ exports.getGroup = async (req, res) => {
     try {
         const groupId = req.params.groupId;
         // console.log(userId);
-        const group = await Group.findById({ _id: groupId }).populate("expenseId").populate('userId');
+        const group = await Group.findById({ _id: groupId }).populate({path:'expenseId',populate:{path:'paidBy',populate:{path:'userId'}}}).populate('userId').populate({path:'expenseId',populate:{path:'split_between',populate:{path:'user'}}});
         // console.log(group);
         return res.status(200).json({ group });
     } catch (err) {
@@ -341,9 +341,9 @@ exports.settleExpenses = async (req, res) => {
                 }
             }
         }
-        
+
         // SETTLE EXPENSE 
-        
+
         const output = [];
         // output format-
         // 0th index -> total expense done by the each user ( concatenation of all equal & unequal splitting),
@@ -390,10 +390,8 @@ exports.settleExpenses = async (req, res) => {
 
         }
 
-
         if (positive.length || negative.length)
-            res.status(400).send("Error in settling expenses");
-
+            return res.status(400).send("Error in settling expenses");
 
         output.push(paymentDetails);
         res.status(201).json(output);
