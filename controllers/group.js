@@ -10,7 +10,7 @@ exports.getGroup = async (req, res) => {
     try {
         const groupId = req.params.groupId;
         // console.log(userId);
-        const group = await Group.findById({ _id: groupId }).populate({path:'expenseId',populate:{path:'paidBy',populate:{path:'userId'}}}).populate('userId').populate({path:'expenseId',populate:{path:'split_between',populate:{path:'user'}}});
+        const group = await Group.findById({ _id: groupId }).populate({ path: 'expenseId', populate: { path: 'paidBy', populate: { path: 'userId' } } }).populate('userId').populate({ path: 'expenseId', populate: { path: 'split_between', populate: { path: 'user' } } });
         // console.log(group);
         return res.status(200).json({ group });
     } catch (err) {
@@ -289,6 +289,31 @@ exports.deletePreviouGroup = async (req, res) => {
     }
 };
 
+exports.settled = async (req, res) => {
+    const groupId = req.params.groupId;
+    const isSettled = req.params.isSettled;
+    // console.log(groupId);
+    // console.log(isSettled);
+    try {
+
+        const currGroup = await Group.findByIdAndUpdate(
+            { _id: groupId },
+            {
+                isSettled: isSettled,
+            }
+        );
+        if (!currGroup) {
+            res.status(422).send({ error: "Error in accessing group" });
+        }
+
+        res.status(200).json({ message: "isSettled updated" });
+
+    }
+    catch (error) {
+        console.log(error);
+        res.status(422).json({ error: "Something went wrong" });
+    }
+}
 exports.settleExpenses = async (req, res) => {
     try {
         const groupId = req.params.groupId;
