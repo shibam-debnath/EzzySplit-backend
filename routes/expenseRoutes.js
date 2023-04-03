@@ -17,7 +17,7 @@ router.post("/:expenseId", expenseController.updateExpense);
 router.delete("/:expenseId", expenseController.deleteExpense);
 
 // Settle expense
-router.post("/settle/:groupId", expenseController.settleExpense);
+// router.post("/settle/:groupId", expenseController.settleExpense);
 
 // Fetch expenses details
 router.get("/:expenseid",expenseController.expenseDetails);

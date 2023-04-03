@@ -29,6 +29,11 @@ const groupSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
+  
+  isSettled: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const Group = mongoose.model("Group", groupSchema);

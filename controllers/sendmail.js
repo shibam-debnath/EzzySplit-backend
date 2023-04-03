@@ -64,3 +64,7 @@ exports.sendmail = async (emailId, message) => {
 
     // smtpTransport.close();
 }
+
+exports.sendNotification = async(emailId, message,res)=>{
+    res.status(201);
+}

@@ -38,27 +38,29 @@ const expenseSchema = new mongoose.Schema({
       default:"0"
     },
     name:{
-      type: String
+      type: String,
+      require:false
     }
   }
   ],
   split_method: {
     type: String,
-    enum: ["equally", "amounts"],
+    enum: ["equally", "unequally"],
+    default: "equally",
     require: true,
   },
   split_between: [
     {
       user: {
-        type: mongoose.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: "User",
       },
       toPay: {
         type: String,
-        default: "",
+        default: "0",
       },
       name:{
-        type: String
+        type:String
       }
     },
   ],
