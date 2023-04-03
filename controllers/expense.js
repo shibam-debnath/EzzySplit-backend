@@ -24,7 +24,7 @@ const addExpense = async (req, res) => {
     console.log(`ourGroup: ${ourGroup}`);
     // console.log(ourGroup);
     if (!ourGroup) {
-      res.status(500).send("Group not found");
+      return res.status(500).send("Group not found");
     }
 
     // * if everything ok then create new expense
@@ -34,7 +34,9 @@ const addExpense = async (req, res) => {
       groupId: req.body.groupId,
       paidBy: req.body.paidBy,
       split_method: req.body.split_method,
-      split_between: req.body.split_between
+      split_between: req.body.split_between,
+      notes: req.body.notes,
+      expDate:req.body.expDate
     });
     // save new expense to db
     await newExpense.save();
