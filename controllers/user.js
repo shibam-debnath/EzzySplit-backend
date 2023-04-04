@@ -13,6 +13,20 @@ exports.getUser = async (req, res) => {
   }
 };
 
+exports.getUserUsingMail = async (req, res) => {
+  try {
+    const emailId = req.params.emailId;
+    console.log(emailId);
+    // console.log(userId);
+    const users = await User.find({ emailId: emailId });
+    console.log(users);
+    return res.status(200).json({ users });
+  } catch (err) {
+    console.log(err);
+    res.status(404).json("No user found!");
+  }
+};
+
 exports.adduser = async (req, res) => {
   try {
     const text = `Hey ${req.body.name}! Nice to see you here`;

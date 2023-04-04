@@ -8,13 +8,13 @@ const { route } = require("./userRoutes");
 //   res.send("<h1>Group</h1>");
 // });
 
-router.post("/creategroup", upload.single('groupIcon'), createGroup);  // create group
+router.post("/creategroup/:userId", upload.single('groupIcon'), createGroup);  // create group
 router.delete("/:groupid", deleteGroup);
 router.patch("/:groupid", editGroupName);
 router.get("/details/:groupId", getGroup);
 
-router.post("/:groupid/inviteUser", inviteUserInGroup);
-router.post("/:groupid/addusers", addusers);
+router.post("/inviteUser", inviteUserInGroup);
+router.post("/addUser", addusers);
 router.delete("/:groupid/:userid", deleteUserFromGroup);
 
 router.get("/:userid", getAllGroups);
