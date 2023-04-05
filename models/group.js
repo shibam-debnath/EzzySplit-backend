@@ -29,11 +29,17 @@ const groupSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
-  
+
   isSettled: {
     type: Boolean,
     default: false,
   },
+
+  creator: {
+    type: mongoose.Types.ObjectId,
+    ref: "User",
+  },
+  
 });
 
 const Group = mongoose.model("Group", groupSchema);

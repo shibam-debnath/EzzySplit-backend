@@ -36,7 +36,9 @@ exports.createGroup = async (req, res) => {
         const groupName = req.body.groupName;
         let groupIcon = req.body.groupIcon;
         //    userId from frontend
-        const userId = req.body.userId;
+        const userId = req.params.userId;
+        console.log(userId);
+        console.log(groupName);
 
         if (req.file) {
             groupIcon = req.file.path;
@@ -53,11 +55,13 @@ exports.createGroup = async (req, res) => {
         }
         // console.log(`Result: ${result}`);
         // Adding current user in Current group created
+        result.creator = userId;
         result.userId.push(userId);
         await result.save();
 
         // Adding grouId in user schema
         const rguser = await User.findById({ _id: userId });
+        // console.log(rguser);
         if (!rguser) {
             res.status(422).json({ error: "User doesn't exist" });
         }
@@ -68,11 +72,11 @@ exports.createGroup = async (req, res) => {
         // console.log(addeduser);
 
         if (req.file) {
-            res.status(201).json({ message: "group created with groupIcon" });
+            res.status(201).json({ message: "group created with groupIcon",groupId :result._id });
             return;
         }
 
-        res.status(201).json({ message: "group created without icon" });
+        res.status(201).json({ message: "group created without icon",groupId :result._id  });
     } catch (error) {
         console.log(error);
         res.status(422).json({ error: "error in creating group" });
@@ -134,30 +138,13 @@ exports.editGroupName = async (req, res) => {
 
 exports.inviteUserInGroup = async (req, res) => {
     try {
-        // console.log(emailId);
-        const groupID = req.params.groupid;
-        const userId = req.body.userId;
-        // console.log(groupID);
-        const userGroup = await Group.findOne({ _id: groupID });
-        // console.log(userGroup);
 
-        var users;
-        try {
-            users = await User.find({ _id: userId });
-        } catch (err) {
-            console.log(err);
-            res.status(404).json("Something went wrong");
-        }
+        const groupName = req.body.groupName;
+        const emailId = req.body.emailId;
+        const groupId = req.body.groupId;
 
-        if (!users) {
-            res.status(201).json("No user found!");
-            return;
-        }
-
-        console.log(users[0].emailId);
-
-        var text = `Hey ${users[0].name}! You are invited to join the ${userGroup.groupName}`;
-        await send.sendmail(users[0].emailId, text);
+        var text = `Hey! You are invited to join the group ${groupName}. Click here "http://localhost:3000/acceptInvitation/${groupId}" to join the group, and if you have not registered yet please register here "http://localhost:3000/" first and then join the group`;
+        await send.sendmail(emailId, text);
 
         res.status(201).json("Invitation sent to the user");
     } catch (error) {
@@ -168,7 +155,7 @@ exports.inviteUserInGroup = async (req, res) => {
 
 exports.addusers = async (req, res) => {
     try {
-        const groupID = req.params.groupid;
+        const groupID = req.body.groupId;
         const userId = req.body.userId;
 
         const userGroup = await Group.findOne({ _id: groupID });
