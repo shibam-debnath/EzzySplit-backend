@@ -1,5 +1,5 @@
 // Model
- const Expense = require("../models/expense");
+const Expense = require("../models/expense");
 const Group = require("../models/group");
 
 // Function 1 : AddExpense handler
@@ -11,7 +11,7 @@ const addExpense = async (req, res) => {
     console.log(`ourGroup: ${ourGroup}`);
     // console.log(ourGroup);
     if (!ourGroup) {
-       return res.status(500).send("Group not found");
+      return res.status(500).send("Group not found");
     }
 
     // * if everything ok then create new expense
@@ -27,6 +27,7 @@ const addExpense = async (req, res) => {
     await newExpense.save();
     console.log(`newExp: ${newExpense}`);
     ourGroup.expenseId.push(newExpense._id);
+    ourGroup.total = Number(ourGroup.total) + Number(req.body.amount);
     await ourGroup.save();
     console.log(`ourGrp lst:: ${ourGroup}`);
     // console.log(newExpense);
@@ -110,48 +111,51 @@ const updateExpense = async (req, res) => {
 
 // Function 3 : deleteExpense handler
 const deleteExpense = async (req, res) => {
-  const userId = req.user;
-  const { expenseId } = req.params;
+  // const userId = req.user;
+  const expenseId = req.params.expenseId;
+  console.log(expenseId);
   const expense = await Expense.findOne({ _id: expenseId });
-  const groupId = req.body.groupId;
-  const ourGroup = await Group.findById({ _id: groupId });
 
   if (!expense) {
     return res.status(404).send({ error: "Expense not found!" });
   } else {
+
+    const groupId = expense.groupId;
+    const ourGroup = await Group.findById({ _id: groupId });
+
     // delete expense
     const ExpenseDeleted = await Expense.findByIdAndDelete({
       _id: expenseId,
     });
 
-    // ! also delete in the group schema
-    await Group.findByIdAndDelete({
-      _id: expenseId,
-    });
 
     if (!ExpenseDeleted) {
       res.status(404).json("Deletion failed");
       return;
     }
+
+    // ! also delete in the group schema
+    await ourGroup.expenseId.pull(expenseId);
+    await ourGroup.save();
     return res.status(200).send("Expense Deleted Succesfully!");
   }
 };
 
 
 // Fetch Expenses details
-const expenseDetails = async(req,res)=>{
+const expenseDetails = async (req, res) => {
   try {
     const expenseId = req.params.expenseid;
-    const ExpDet = await Expense.findById({_id:expenseId}).populate('paidBy.userId');
-    if(!ExpDet){
-      res.status(422).json({error:"Error in fetching Expense details"});
+    const ExpDet = await Expense.findById({ _id: expenseId }).populate('paidBy.userId');
+    if (!ExpDet) {
+      res.status(422).json({ error: "Error in fetching Expense details" });
     }
-    res.status(200).json({expenseDetails:ExpDet});
-    
+    res.status(200).json({ expenseDetails: ExpDet });
+
   } catch (error) {
-    res.status(422).json({error});
+    res.status(422).json({ error });
   }
 
 }
 
-module.exports = { addExpense, updateExpense, deleteExpense ,expenseDetails};
+module.exports = { addExpense, updateExpense, deleteExpense, expenseDetails };
