@@ -211,7 +211,7 @@ exports.deleteUserFromGroup = async (req, res) => {
 exports.getAllGroups = async (req, res) => {
     try {
         const userId = req.params.userid;
-        const currUser = await User.findById({ _id: userId }).populate("groupid");
+        const currUser = await User.findById({ _id: userId }).populate("groupid").populate({ path: 'groupid', populate: { path: 'userId'}});
         if (!currUser) {
             res.status(422).json({ error: "User doesn't exist" });
         } else {
