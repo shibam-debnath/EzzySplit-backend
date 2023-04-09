@@ -21,15 +21,17 @@ const addExpense = async (req, res) => {
       groupId: req.body.groupId,
       paidBy: req.body.paidBy,
       split_method: req.body.split_method,
-      split_between: req.body.split_between
+      split_between: req.body.split_between,
+      notes: req.body.notes,
+      expDate:req.body.expDate
     });
     // save new expense to db
     await newExpense.save();
-    console.log(`newExp: ${newExpense}`);
+    // console.log(`newExp: ${newExpense}`);
     ourGroup.expenseId.push(newExpense._id);
     ourGroup.total = Number(ourGroup.total) + Number(req.body.amount);
     await ourGroup.save();
-    console.log(`ourGrp lst:: ${ourGroup}`);
+    // console.log(`ourGrp lst:: ${ourGroup}`);
     // console.log(newExpense);
     // // ! Update the expense in Group
     // ourGroup.expenses.push(newExpense._id);
