@@ -117,13 +117,14 @@ const deleteExpense = async (req, res) => {
   const expenseId = req.params.expenseId;
   console.log(expenseId);
   const expense = await Expense.findOne({ _id: expenseId });
-
+  
   if (!expense) {
     return res.status(404).send({ error: "Expense not found!" });
   } else {
-
+    
     const groupId = expense.groupId;
     const ourGroup = await Group.findById({ _id: groupId });
+    const amount = expense.amount;
 
     // delete expense
     const ExpenseDeleted = await Expense.findByIdAndDelete({
@@ -138,6 +139,7 @@ const deleteExpense = async (req, res) => {
 
     // ! also delete in the group schema
     await ourGroup.expenseId.pull(expenseId);
+    ourGroup.total=Number(ourGroup.total)-Number(amount);
     await ourGroup.save();
     return res.status(200).send("Expense Deleted Succesfully!");
   }
