@@ -13,14 +13,29 @@ exports.getUser = async (req, res) => {
   }
 };
 
+exports.getUserUsingMail = async (req, res) => {
+  try {
+    const emailId = req.params.emailId;
+    console.log(emailId);
+    // console.log(userId);
+    const users = await User.find({ emailId: emailId });
+    console.log(users);
+    return res.status(200).json({ users });
+  } catch (err) {
+    console.log(err);
+    res.status(404).json("No user found!");
+  }
+};
+
 exports.adduser = async (req, res) => {
   try {
-    const text = `Hey ${req.body.name}! Nice to see you here`;
-    await send.sendmail(req.body.emailId, text);
+    // const text = `Hey ${req.body.name}! Nice to see you here`;
+    // await send.sendmail(req.body.emailId, text);
+    console.log(req.body.name);
 
     const result = await User.create({
       emailId: req.body.emailId,
-      password: req.body.password,
+      uid: req.body.uid,
       name: req.body.name,
       groupid: [],
     });
@@ -28,6 +43,35 @@ exports.adduser = async (req, res) => {
     res.status(201).json({ result });
   } catch (err) {
     console.log(err);
-    res.status(500).json({ message: "something went wrong" });
+    res.status(500).json(err);
+  }
+};
+
+exports.edituser = async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    console.log(userId);
+    if (!userId) {
+      return res.send(505).send({ error: "User not found !" });
+    }
+
+    User.findByIdAndUpdate(
+      userId,
+      {
+        name: req.body.name,
+        uid: req.body.uid,
+        imageUrl: req.body.imageUrl,
+      },
+      function (err, result) {
+        if (err) {
+          return res.status(404).json("Update failed");
+        } else {
+          return res.status(200).json("Successfully updated");
+        }
+      }
+    );
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json(err);
   }
 };
