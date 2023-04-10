@@ -19,11 +19,14 @@ exports.getUserUsingMail = async (req, res) => {
     console.log(emailId);
     // console.log(userId);
     const users = await User.find({ emailId: emailId });
+    if(users.length===0){
+      return res.status(422).json({error:"User doesn't exists"});
+    }
     console.log(users);
-    return res.status(200).json({ users });
+    res.status(200).send(users);
   } catch (err) {
     console.log(err);
-    res.status(404).json("No user found!");
+    res.status(422).json("No user found!");
   }
 };
 
