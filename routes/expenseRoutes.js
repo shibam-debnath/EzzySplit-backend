@@ -14,12 +14,12 @@ router.post("/addExpense", expenseController.addExpense);
 router.post("/:expenseId", expenseController.updateExpense);
 
 // Delete Expense: Using Delete (Login required)
-router.delete("/:expenseId", expenseController.deleteExpense);
+router.delete("/delete/:expenseId", expenseController.deleteExpense);
 
 // Settle expense
 // router.post("/settle/:groupId", expenseController.settleExpense);
 
 // Fetch expenses details
-router.get("/:expenseid",expenseController.expenseDetails);
+router.get("/:expenseid", expenseController.expenseDetails);
 
 module.exports = router;

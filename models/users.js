@@ -5,13 +5,17 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  password: {
+  uid: {
     type: String,
-    required: true,
+    default: "",
   },
   emailId: {
     type: String,
     required: true,
+  },
+  imageUrl: {
+    type: String,
+    default: "",
   },
   friends: [
     {
