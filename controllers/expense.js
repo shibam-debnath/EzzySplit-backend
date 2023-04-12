@@ -47,68 +47,39 @@ const addExpense = async (req, res) => {
 // Function 2 : UpdateExpense handler
 const updateExpense = async (req, res) => {
   // access requirements from req
-  const { expenseId } = req.params;
-  const userId = req.user;
-  const expense = await Expense.findOne({ _id: expenseId });
-  const groupId = req.body.groupId;
-  const ourGroup = await Group.findById({ _id: groupId });
+  try {
+    const { userid,groupid,expenseid } = req.params;
 
-  if (!expense) {
-    return res.status(404).send({ error: "Expense not found !" });
-  } else if (!ourGroup) {
-    return res.status(404).send({ error: "Group doesn't exist !" });
-  } else {
-    Expense.findByIdAndUpdate(
-      expenseId,
-      {
-        $set: req.body,
-      },
-      { new: true },
-      function (err, result) {
-        if (err) {
-          res.status(404).json("Update failed");
-        } else {
-          res.status(200).json("Successfully updated");
-          res.send(200).json(result);
-        }
-      }
-    );
-
-    // ! also update in the group schema
-    Group.findByIdAndUpdate(
-      groupId,
-      {
-        expenses: req.body,
-      },
-      { new: true },
-      function (err, result) {
-        if (err) {
-          res.status(404).json("Updation failed in the group");
-        } else {
-          res.status(200).json("Successfully updated in the group also");
-          res.send(200).json(result);
-        }
-      }
-    );
+  const ourGroup = await Group.findById({ _id: groupid });
+  if(!ourGroup){
+    return res.status(422).json({error:"Group doesn't exist"});
   }
+  else{
+    const expense = await Expense.findById({ _id: expenseid });
+    if(!expense){
+      return res.status(422).json({error:"Expense doesn't exist"});
+    }
+    const upExpense = await Expense.findByIdAndUpdate({_id:expenseid},{
+      amount: req.body.amount ,
+      description: req.body.description,
+      groupId: req.body.groupId,
+      paidBy: req.body.paidBy,
+      split_method: req.body.split_method,
+      split_between: req.body.split_between,
+      notes: req.body.notes,
+      expDate:req.body.expDate}
+      );
+    if(!upExpense){
+      return res.status(422).json({error:"Error in updating expenses"});
+    }
 
-  // update current expense
-  // expense.amount = new_amount;
-  // expense.notes = new_notes;
-  // expense.date = Date.now();
-  // expense.groupId = new_groupId;
-  // expense.split_method = new_split_method;
-
-  // previous split between
-  // const splitData = expense.split_between;
-  // const new_splitData = req.body.split_between;
-
-  // for (let i = 0; i < splitData.length; i++) {
-  // access details of last transaction
-  //   splitData[i].user = new_splitData[i].user;
-  //   splitData[i].paid = new_splitData[i].paid;
-  //   splitData[i].toPay = new_splitData[i].toPay;
-  // }
+    ourGroup.total = Number(ourGroup.total) - Number(req.body.prevAmount) + Number(req.body.amount);
+    await ourGroup.save();
+    return res.status(200).send({upExpense});
+  }
+  } catch (error) {
+    return res.status(422).json({error:"Error occured in editing expense"});
+  }
 };
 
 // Function 3 : deleteExpense handler
