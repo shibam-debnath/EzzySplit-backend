@@ -39,7 +39,11 @@ const groupSchema = new mongoose.Schema({
     type: mongoose.Types.ObjectId,
     ref: "User",
   },
-  
+
+  createdOn: {
+    type: Date,
+    default: Date.now(),
+  },
 });
 
 const Group = mongoose.model("Group", groupSchema);
