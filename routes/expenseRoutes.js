@@ -11,7 +11,7 @@ const { route } = require("./userRoutes");
 router.post("/addExpense", expenseController.addExpense);
 
 // Update already stored expense (Login required)
-router.post("/:expenseId", expenseController.updateExpense);
+router.patch("/:userid/:groupid/:expenseid", expenseController.updateExpense);
 
 // Delete Expense: Using Delete (Login required)
 router.delete("/delete/:expenseId", expenseController.deleteExpense);
