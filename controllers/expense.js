@@ -68,6 +68,7 @@ const updateExpense = async (req, res) => {
       split_method: req.body.split_method,
       split_between: req.body.split_between,
       notes: req.body.notes,
+      category:req.body.category,
       expDate:req.body.expDate}
       );
     if(!upExpense){
