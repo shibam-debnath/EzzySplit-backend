@@ -20,17 +20,6 @@ exports.getGroup = async (req, res) => {
 };
 
 
-exports.getGroup = async (req,res) =>{
-    try{
-        const groupId=req.params.groupID;
-        const group=await Group.find({_id:groupId});
-        return res.status(200).jason({group});
-    }
-    catch(err){
-console.log(err);
- res.status(500).jason("No Group Found");
-    }
-};
 exports.createGroup = async (req, res) => {
     try {
         const groupName = req.body.groupName;
