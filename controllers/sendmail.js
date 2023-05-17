@@ -8,8 +8,8 @@ exports.contactMail = async (req, res) => {
     let smtpTransport = nodemailer.createTransport({
         service: 'Gmail',
         auth: {
-            user: 'ezzysplit@gmail.com',
-            pass: 'bvqlzslmovlzlhrq'
+            user: process.env.emailId,
+            pass: process.env.passKey
         }
     })
 
@@ -39,8 +39,8 @@ exports.sendmail = async (emailId, message) => {
     let smtpTransport = nodemailer.createTransport({
         service: 'Gmail',
         auth: {
-            user: 'ezzysplit@gmail.com',
-            pass: 'bvqlzslmovlzlhrq'
+            user: process.env.emailId,
+            pass: process.env.passKey
         }
     })
 
