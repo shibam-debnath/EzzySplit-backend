@@ -132,7 +132,7 @@ exports.inviteUserInGroup = async (req, res) => {
         const emailId = req.body.emailId;
         const groupId = req.body.groupId;
 
-        var text = `Hey! You are invited to join the group ${groupName}. Click here "http://localhost:3000/acceptInvitation/${groupId}" to join the group, and if you have not registered yet please register here "http://localhost:3000/" first and then join the group`;
+        var text = `Hey! You are invited to join the group ${groupName}. Click here "https://ezzysplit.vercel.app/acceptInvitation/${groupId}" to join the group, and if you have not registered yet please register here "https://ezzysplit.vercel.app/" first and then join the group`;
         await send.sendmail(emailId, text);
 
         res.status(201).json("Invitation sent to the user");
