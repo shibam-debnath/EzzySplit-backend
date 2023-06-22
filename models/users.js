@@ -72,10 +72,8 @@ const UserSchema = new mongoose.Schema({
   ],
 
   joinedOn: {
-
     type: Date,
     default: Date.now(),
-
   }
 });
 
